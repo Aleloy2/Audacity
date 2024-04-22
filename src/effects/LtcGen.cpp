@@ -20,7 +20,7 @@ const EnumValueSymbol EffectLtcGen::kFpsStrings[nTypes] =
    
    { XC("25", "fps") },
    
-   { XC("30", "fps") }
+   { XC("30", "fps") },
 
    { XC("29.97", "fps") }
 };
@@ -110,7 +110,7 @@ std::unique_ptr<EffectEditor> EffectLtcGen::PopulateOrExchange(
 
       S
          .Validator<FloatingPointValidator<double>>(
-            6, &mfrate, NumValidatorStyle::NO_TRAILING_ZEROES, Amp.min, Amp.max)
+            6, &mfrate, NumValidatorStyle::NO_TRAILING_ZEROES, frate.min, frate.max)
          .AddTextBox(XXO("&Frequency Rate:"), L"", 12);
 
       S.AddPrompt(XXO("&Duration:"));

@@ -375,6 +375,8 @@ list( APPEND SOURCES
       effects/Loudness.h
       effects/Noise.cpp
       effects/Noise.h
+      effects/LtcGen.h
+      effects/LtcGen.cpp
       effects/NoiseReduction.cpp
       effects/NoiseReduction.h
       effects/NoiseRemoval.cpp

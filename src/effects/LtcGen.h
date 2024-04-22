@@ -66,9 +66,9 @@ private:
    };
    static const EnumValueSymbol kFpsStrings[nTypes];
 
-   static constexpr EnumParameter Type{ &EffectLtcGen::mfps,
+   static constexpr EnumParameter fps{ &EffectLtcGen::mfps,
    L"Frames Per Second",       k24,  0,    nTypes - 1, 1, kFpsStrings, nTypes };
-   static constexpr EffectParameter Amp{ &EffectLtcGen::mfrate,
+   static constexpr EffectParameter frate{ &EffectLtcGen::mfrate,
    L"Frame Rate",  44100,     0,  96000,           1 };
 };
 
