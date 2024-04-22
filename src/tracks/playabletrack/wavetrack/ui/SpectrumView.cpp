@@ -190,26 +190,6 @@ std::vector<UIHandlePtr> SpectrumView::DetailedHitTest(
 void SpectrumView::DoSetMinimized( bool minimized )
 {
    auto wt = static_cast<WaveTrack*>( FindTrack().get() );
-
-#ifdef EXPERIMENTAL_HALF_WAVE
-   bool bHalfWave;
-   gPrefs->Read(wxT("/GUI/CollapseToHalfWave"), &bHalfWave, false);
-   if( bHalfWave && minimized)
-   {
-      // It is all right to set the top of scale to a huge number,
-      // not knowing the track sampleRate here -- because when retrieving the
-      // value, then we pass in a sample rate and clamp it above to the
-      // Nyquist frequency.
-      constexpr auto max = std::numeric_limits<float>::max();
-      const bool spectrumLinear =
-         (SpectrogramSettings::Get(*wt).scaleType ==
-            SpectrogramSettings::stLinear);
-      // Zoom out full
-      SpectrogramBounds::Get(*wt)
-         .SetBounds( spectrumLinear ? 0.0f : 1.0f, max );
-   }
-#endif
-
    ChannelView::DoSetMinimized(minimized);
 }
 
