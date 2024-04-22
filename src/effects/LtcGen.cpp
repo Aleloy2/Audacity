@@ -33,7 +33,7 @@ const EffectParameterMethods& EffectLtcGen::Parameters() const
    return parameters;
 }
 
-const ComponentInterfaceSymbol EffectNoise::Symbol
+const ComponentInterfaceSymbol EffectLtcGen::Symbol
 { XO("LTC waveform") };
 
 namespace { BuiltinEffectsModule::Registration< EffectLtcGen > reg; }
