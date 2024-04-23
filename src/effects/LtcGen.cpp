@@ -86,7 +86,56 @@ bool EffectLtcGen::ProcessInitialize(EffectSettings&,
 size_t EffectLtcGen::ProcessBlock(EffectSettings&,
    const float* const*, float* const* outbuf, size_t size)
 {
-   LTCEncoder* encoder;
+   // BEGIN LTC MAGIC
+   double length = 2; // in seconds
+	double fps = 25;
+	double sample_rate = 48000;
+	char *filename;
+
+	int vframe_cnt;
+	int vframe_last;
+
+	int total = 0;
+	ltcsnd_sample_t *buf;
+
+	LTCEncoder *encoder;
+	SMPTETimecode st;
+
+	/* start encoding at this timecode */
+	const char timezone[6] = "+0100";
+	strcpy(st.timezone, timezone);
+	st.years =  8;
+	st.months = 12;
+	st.days =   31;
+
+	st.hours = 23;
+	st.mins = 59;
+	st.secs = 59;
+	st.frame = 0; 
+	encoder = ltc_encoder_create(sample_rate, fps,
+		fps==25?LTC_TV_625_50:LTC_TV_525_60, LTC_USE_DATE);
+	ltc_encoder_set_timecode(encoder, &st);
+
+	buf = (ltcsnd_sample_t*) calloc(ltc_encoder_get_buffersize(encoder), sizeof(ltcsnd_sample_t));
+	if (!buf) {
+			return -1;
+	}
+	while (vframe_cnt++ < vframe_last) {
+	/* encode and write each of the 80 LTC frame bits (10 bytes) */
+		int byte_cnt;
+		for (byte_cnt = 0 ; byte_cnt < 10 ; byte_cnt++) {
+			ltc_encoder_encode_byte(encoder, byte_cnt, 1.0);
+			int len = ltc_encoder_copy_buffer(encoder, buf);
+			if (len > 0) {
+				//fwrite(buf, sizeof(ltcsnd_sample_t), len, file);
+				total+=len;
+			}
+		}
+		ltc_encoder_inc_timecode(encoder);
+	}
+	ltc_encoder_free(encoder);
+   // END LTC STUFF
+   
    float* buffer = outbuf[0];
 
    for (decltype(size) i = 0; i < size; i++)
