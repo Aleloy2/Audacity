@@ -136,7 +136,14 @@ ExportTask ExportTaskBuilder::Build(AudacityProject& project)
                }
                finalHash = sha256.Finalize();
                fclose(file);
-               printf("SHA256 Checksum: %s\n", finalHash.c_str());
+               std::string checksumFilename = actualFilename.GetFullPath().ToStdString() + ".checksum.txt";
+               std::ofstream checksumFile(checksumFilename);
+               if (checksumFile.is_open()) {
+                   checksumFile << finalHash;
+                   checksumFile.close();
+                   printf("SHA256 Checksum written to %s\n", checksumFilename.c_str());
+               } else {
+                   printf("Failed to open checksum file for writing.\n");                       }
             }
                     
 
