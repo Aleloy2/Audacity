@@ -2,7 +2,7 @@
 #include "EffectEditor.h"
 #include "LoadEffects.h"
 
-#include <ltc.h>
+#include "ltc.h"
 
 #include <math.h>
 
