@@ -2,6 +2,8 @@
 #include "EffectEditor.h"
 #include "LoadEffects.h"
 
+#include <ltc.h>
+
 #include <math.h>
 
 #include <wx/choice.h>
@@ -84,6 +86,7 @@ bool EffectLtcGen::ProcessInitialize(EffectSettings&,
 size_t EffectLtcGen::ProcessBlock(EffectSettings&,
    const float* const*, float* const* outbuf, size_t size)
 {
+   LTCEncoder* encoder;
    float* buffer = outbuf[0];
 
    for (decltype(size) i = 0; i < size; i++)
