@@ -87,6 +87,8 @@ size_t EffectLtcGen::ProcessBlock(EffectSettings&,
    const float* const*, float* const* outbuf, size_t size)
 {
    // BEGIN LTC MAGIC
+   FILE* file;
+   file = fopen("test.wav", "wb"); 
    double length = 2; // in seconds
 	double fps = 25;
 	double sample_rate = 48000;
@@ -120,28 +122,36 @@ size_t EffectLtcGen::ProcessBlock(EffectSettings&,
 	if (!buf) {
 			return -1;
 	}
+
+    vframe_cnt = 0;
+    vframe_last = length * fps;
+
 	while (vframe_cnt++ < vframe_last) {
 	/* encode and write each of the 80 LTC frame bits (10 bytes) */
 		int byte_cnt;
 		for (byte_cnt = 0 ; byte_cnt < 10 ; byte_cnt++) {
 			ltc_encoder_encode_byte(encoder, byte_cnt, 1.0);
 			int len = ltc_encoder_copy_buffer(encoder, buf);
+            printf("TEST\n");
 			if (len > 0) {
-				//fwrite(buf, sizeof(ltcsnd_sample_t), len, file);
+                printf("HI\n");
+				fwrite(buf, sizeof(ltcsnd_sample_t), len, file);
 				total+=len;
 			}
 		}
+        fclose(file);
 		ltc_encoder_inc_timecode(encoder);
 	}
 	ltc_encoder_free(encoder);
    // END LTC STUFF
    
-   float* buffer = outbuf[0];
+   float* output_buffer = outbuf[0];
 
    for (decltype(size) i = 0; i < size; i++)
    {
-      buffer[i] = 0;
+      output_buffer[i] = 0;
    }
+    // memcpy(output_buffer, buf, size);
 
    return size;
 
