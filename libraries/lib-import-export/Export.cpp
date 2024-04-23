@@ -24,6 +24,7 @@
 #include "WaveTrack.h"
 #include "wxFileNameWrapper.h"
 #include "StretchingSequence.h"
+#include <openssl/md5.h>
 
 #include "ExportUtils.h"
 
@@ -123,6 +124,33 @@ ExportTask ExportTaskBuilder::Build(AudacityProject& project)
                      targetFilename.GetFullPath(),
                      true);
                }
+unsigned char result[MD5_DIGEST_LENGTH];
+FILE* file = fopen(actualFilename.GetFullPath().c_str(), "rb");
+if (file){
+   unsigned char data[1024];
+   MD5_CTX md5;
+   MD5_Init(&md5);
+   int bytes;
+   while((bytes = fread(data,1,1024, file)) != 0){
+      MD5_Update(&md5, data , bytes);
+
+   }
+MD5_Final(result, &md5);
+fclose(file);
+char buf[33];
+
+for(int i = 0; i< MD5_DIGEST_LENGTH; i++){
+   sprintf(&buf[i*2], "%02x", result[i]);
+}
+buf[32] = '\0';
+
+printf("MD5 Checksum: %s\n", buf);
+
+}
+
+
+
+
             }
             else
                ::wxRemoveFile(actualFilename.GetFullPath());
@@ -160,3 +188,4 @@ void ShowExportErrorDialog(const TranslatableString& message,
       helpPageId,
       ErrorDialogOptions { allowReporting ? ErrorDialogType::ModalErrorReport : ErrorDialogType::ModalError });
 }
+ 
