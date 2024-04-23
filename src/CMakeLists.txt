@@ -1027,11 +1027,14 @@ list( APPEND LDFLAGS
 
 find_package( Threads QUIET )
 #
+find_package(OpenSSL REQUIRED)
 #
 #
 set( LIBRARIES
    PUBLIC
       ${CMAKE_REQUIRED_LIBRARIES}
+      OpenSSL::SSL 
+      OpenSSL::Crypto
       ZLIB::ZLIB
       $<$<BOOL:${USE_NYQUIST}>:libnyquist>
       $<$<BOOL:${USE_SBSMS}>:libsbsms>
