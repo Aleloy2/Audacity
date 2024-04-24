@@ -93,6 +93,22 @@ size_t EffectLtcGen::ProcessBlock(EffectSettings&,
 	double sample_rate = srate;
 	char *filename;
 
+   switch (fps) {
+      default:
+      case k24:
+         fps = 24;
+         break;
+      case k25:
+         fps = 25;
+         break;
+      case k30:
+         fps = 30;
+         break;
+      case k29_97:
+         fps = 30;
+         break;
+   }
+
 	int vframe_cnt;
 	int vframe_last;
 
