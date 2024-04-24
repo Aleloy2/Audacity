@@ -90,8 +90,7 @@ size_t EffectLtcGen::ProcessBlock(EffectSettings&,
    FILE* file;
    file = fopen("test.wav", "wb"); 
    double length = 2; // in seconds
-	double fps = 25;
-	double sample_rate = 48000;
+	double sample_rate = srate;
 	char *filename;
 
 	int vframe_cnt;
