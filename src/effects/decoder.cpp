@@ -1,32 +1,3 @@
-/*
-   libltc - en+decode linear timecode
-
-   Copyright (C) 2005 Maarten de Boer <mdeboer@iua.upf.es>
-   Copyright (C) 2006-2022 Robin Gareus <robin@gareus.org>
-   Copyright (C) 2008-2009 Jan <jan@geheimwerk.de>
-
-   Binary constant generator macro for endianess conversion
-   by Tom Torfs - donated to the public domain
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU Lesser General Public License as
-   published by the Free Software Foundation, either version 3 of the
-   License, or (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with this library.
-   If not, see <http://www.gnu.org/licenses/>.
-*/
-
-/** turn a numeric literal into a hex constant
- *  (avoids problems with leading zeroes)
- *  8-bit constants max value 0x11111111, always fits in unsigned long
- */
 #define HEX__(n) 0x##n##LU
 
 /**
