@@ -49,8 +49,8 @@ private:
    wxWeakRef<wxWindow> mUIParent{};
 
    double mSampleRate{};
-   int mfps;
-   double mfrate;
+   int fps;
+   double srate;
 
    NumericTextCtrl* mLtcGenDurationT;
 
@@ -66,10 +66,11 @@ private:
    };
    static const EnumValueSymbol kFpsStrings[nTypes];
 
-   static constexpr EnumParameter fps{ &EffectLtcGen::mfps,
+   static constexpr EnumParameter mfps{ &EffectLtcGen::fps,
    L"Frames Per Second",       k24,  0,    nTypes - 1, 1, kFpsStrings, nTypes };
-   static constexpr EffectParameter frate{ &EffectLtcGen::mfrate,
-   L"Frame Rate",  44100,     0,  96000,           1 };
+   static constexpr EffectParameter msrate{ &EffectLtcGen::srate,
+   L"Frame Rate",   44100,     1,     96000,           1 };
+
 };
 
 #endif

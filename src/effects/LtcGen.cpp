@@ -28,7 +28,7 @@ const EnumValueSymbol EffectLtcGen::kFpsStrings[nTypes] =
 const EffectParameterMethods& EffectLtcGen::Parameters() const
 {
    static CapturedParameters<EffectLtcGen,
-      fps, frate
+     mfps, msrate
    > parameters;
    return parameters;
 }
@@ -100,17 +100,17 @@ std::unique_ptr<EffectEditor> EffectLtcGen::PopulateOrExchange(
    const EffectOutputs*)
 {
    mUIParent = S.GetParent();
+   wxTextCtrl *t;
 
    wxASSERT(nTypes == WXSIZEOF(kFpsStrings));
 
    S.StartMultiColumn(2, wxCENTER);
    {
-      S.Validator<wxGenericValidator>(&mfps)
+      S.Validator<wxGenericValidator>(&fps)
          .AddChoice(XXO("&Frames Per Second:"), Msgids(kFpsStrings, nTypes));
 
-      S
-         .Validator<FloatingPointValidator<double>>(
-            6, &mfrate, NumValidatorStyle::NO_TRAILING_ZEROES, frate.min, frate.max)
+      S.Validator<FloatingPointValidator<double>>(
+            6, &srate, NumValidatorStyle::NO_TRAILING_ZEROES, msrate.min, msrate.max)
          .AddTextBox(XXO("&Frequency Rate:"), L"", 12);
 
       S.AddPrompt(XXO("&Duration:"));
