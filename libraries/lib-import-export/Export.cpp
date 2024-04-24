@@ -14,7 +14,7 @@
 *//*****************************************************************/
 
 #include "Export.h"
-
+#include "../../lib-crypto/crypto/SHA256.h"
 #include <numeric>
 
 #include "BasicUI.h"
@@ -24,6 +24,8 @@
 #include "WaveTrack.h"
 #include "wxFileNameWrapper.h"
 #include "StretchingSequence.h"
+
+#include "crypto/SHA256.h"
 
 #include "ExportUtils.h"
 
@@ -123,6 +125,28 @@ ExportTask ExportTaskBuilder::Build(AudacityProject& project)
                      targetFilename.GetFullPath(),
                      true);
                }
+
+            crypto::SHA256 sha256;
+            std::string finalHash;
+            FILE *file = fopen(actualFilename.GetFullPath().c_str(), "rb");
+            if(file){
+               char data[1024];
+               while(size_t bytes = fread(data, 1, sizeof(data),file)){
+                  sha256.Update(data,bytes);
+               }
+               finalHash = sha256.Finalize();
+               fclose(file);
+               std::string checksumFilename = actualFilename.GetFullPath().ToStdString() + ".checksum.txt";
+               std::ofstream checksumFile(checksumFilename);
+               if (checksumFile.is_open()) {
+                   checksumFile << finalHash;
+                   checksumFile.close();
+                   printf("SHA256 Checksum written to %s\n", checksumFilename.c_str());
+               } else {
+                   printf("Failed to open checksum file for writing.\n");                       }
+            }
+                    
+
             }
             else
                ::wxRemoveFile(actualFilename.GetFullPath());
@@ -160,3 +184,4 @@ void ShowExportErrorDialog(const TranslatableString& message,
       helpPageId,
       ErrorDialogOptions { allowReporting ? ErrorDialogType::ModalErrorReport : ErrorDialogType::ModalError });
 }
+ 

@@ -7,6 +7,8 @@ set( TARGET_ROOT ${CMAKE_CURRENT_SOURCE_DIR} )
 
 def_vars()
 
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../lib-crypto/crypto")
+
 set( SOURCES
    Export.cpp
    Export.h
@@ -38,12 +40,14 @@ set( SOURCES
    LibsndfileTagger.h
    PlainExportOptionsEditor.cpp
    PlainExportOptionsEditor.h
+
 )
 set( LIBRARIES
    rapidjson::rapidjson
    lib-tags-interface
    lib-wave-track-interface
    lib-project-interface
+   lib-crypto
    PRIVATE
       lib-effects-interface
 )
@@ -51,3 +55,5 @@ audacity_library( lib-import-export "${SOURCES}" "${LIBRARIES}"
    "" ""
 )
 add_subdirectory(riff-test-util)
+
+add_dependencies(lib-import-export lib-crypto)
