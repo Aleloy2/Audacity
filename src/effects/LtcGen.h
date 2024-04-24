@@ -4,6 +4,7 @@
 #include "StatefulPerTrackEffect.h"
 #include "ShuttleAutomation.h"
 #include <wx/weakref.h>
+#include "ltc.h"
 
 class NumericTextCtrl;
 class ShuttleGui;
@@ -52,6 +53,11 @@ private:
    int fps;
    double srate;
 
+   bool timecodeCalculated = false;
+   ltcsnd_sample_t* data_buffer = nullptr;
+   size_t data_buffer_size;
+   size_t buf_pos = 0;
+
    NumericTextCtrl* mLtcGenDurationT;
 
    const EffectParameterMethods& Parameters() const override;
@@ -69,8 +75,7 @@ private:
    static constexpr EnumParameter mfps{ &EffectLtcGen::fps,
    L"Frames Per Second",       k24,  0,    nTypes - 1, 1, kFpsStrings, nTypes };
    static constexpr EffectParameter msrate{ &EffectLtcGen::srate,
-   L"Frame Rate",   44100,     1,     96000,           1 };
-
+   L"Sample Rate",   44100,     1,     96000,           1 };
 };
 
 #endif
