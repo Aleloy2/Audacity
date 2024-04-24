@@ -147,9 +147,7 @@ size_t EffectLtcGen::ProcessBlock(EffectSettings&,
 		for (byte_cnt = 0 ; byte_cnt < 10 ; byte_cnt++) {
 			ltc_encoder_encode_byte(encoder, byte_cnt, 1.0);
 			int len = ltc_encoder_copy_buffer(encoder, buf);
-            printf("TEST\n");
 			if (len > 0) {
-                printf("HI\n");
 				fwrite(buf, sizeof(ltcsnd_sample_t), len, file);
 				total+=len;
 			}
